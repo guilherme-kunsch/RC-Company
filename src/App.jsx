@@ -8,7 +8,7 @@ export function App() {
   return (
     <div>
       <Header />
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center flex-wrap">
         <Card
           className="w-[600px] h-full"
           src="https://api.thingspeak.com/channels/2468578/charts/1?title=Umidade&width=600&type=spline&dynamic=true&results=20"
