@@ -11,11 +11,11 @@ export function App() {
       <div className="flex justify-center items-center">
         <Card
           className="w-[600px] h-full"
-          src="https://api.thingspeak.com/channels/2468578/charts/2?title=Temperatura&color=FF69B4&xaxis=Time&type=column&yaxismin&yaxismax&width=600&height"
+          src="https://api.thingspeak.com/channels/2468578/charts/1?title=Umidade&width=600&type=spline&dynamic=true&results=20"
         />
         <Card
           className="w-[600px] h-full"
-          src="https://api.thingspeak.com/channels/2468578/charts/1?title=Umidade&color=FF69B4&xaxis=Time&type=column&yaxismin&yaxismax&width=600&height"
+          src="https://api.thingspeak.com/channels/2468578/charts/2?title=Temperatura&width=600&type=spline&dynamic=true&results=20"
         />
       </div>
     </div>
