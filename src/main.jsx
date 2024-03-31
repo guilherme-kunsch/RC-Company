@@ -8,9 +8,9 @@ import './global.css'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider>
-      <Background>
+        <Background>
           <App />
-      </Background>
+        </Background>
     </ThemeProvider>
   </React.StrictMode>,
 )

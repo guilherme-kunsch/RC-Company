@@ -6,7 +6,6 @@ export function Dashboard() {
         <div>
             <Layout />
             <div className='dark:text-white'>Dashboard</div>
-            <p className='bg-white'>Ola mundo</p>
         </div>
     )
 }

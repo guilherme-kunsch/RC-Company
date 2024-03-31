@@ -1,8 +1,9 @@
 import { Logo } from "../components/Logo";
 export function Login() {
   return (
-    <div className="max-w-[25rem] justify-center mx-auto border-2 border-red-700 p-4">
-      <div className="flex justify-center text-white mb-6">
+    <div className="w-[30rem]">
+      <div className="bg-red-700 p-6">
+      <div className="flex justify-center text-white mb-4">
         <Logo />
         <span>RC Company</span>
       </div>
@@ -14,8 +15,9 @@ export function Login() {
         <span>
           <a href="#">Esqueceu sua senha?</a>
         </span>
-        <button>Entrar</button>
+        <button className="bg-black">Entrar</button>
       </form>
+      </div>
     </div>
   );
 }
