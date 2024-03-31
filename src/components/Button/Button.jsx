@@ -1,5 +1,5 @@
 import React from 'react'
-import './Button.css'
+import './Button.module.css'
 
 export function Button({ mobileMenu, setMobileMenu }) {
     return (
