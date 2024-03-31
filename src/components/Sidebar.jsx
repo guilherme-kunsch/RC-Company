@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { BsArrowLeftCircle } from "react-icons/bs";
 import { VscPieChart, VscBell, VscArchive, VscExclude } from "react-icons/vsc";
-import { Logo } from "../assets/logo.svg";
+import Logo from "../assets/logo.svg";
 import { Button } from "./Button/Button";
 
 export function Sidebar() {

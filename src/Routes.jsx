@@ -2,11 +2,11 @@ import { BrowserRouter, createBrowserRouter, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
 import { Historic } from "./pages/Historic";
-import { Alerts } from "./pages/Alerts";
-import { Logout } from "./pages/Logout";
+import { Alertas } from "./pages/Alerts";
+import { LoginExit } from "./pages/Logout";
 import { LoginInitial } from "./pages/LoginInitial";
 
-export const routes = createBrowserRouter([
+export const router = createBrowserRouter([
     {
         path: "/",
         element: <LoginInitial />
@@ -25,11 +25,11 @@ export const routes = createBrowserRouter([
     },
     {
         path: "/alertas",
-        element: <Logout />
+        element: <LoginExit />
     },
     {
         path: "/sair",
-        element: <Alerts />
+        element: <Alertas />
     },
 ])
 

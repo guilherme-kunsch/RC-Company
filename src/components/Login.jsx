@@ -1,4 +1,4 @@
-import Logo from "../components/Logo";
+import { Logo } from "../components/Logo";
 export function Login() {
   return (
     <div className="max-w-[25rem] justify-center mx-auto border-2 border-red-700 p-4">
@@ -18,4 +18,4 @@ export function Login() {
       </form>
     </div>
   );
-};
+}
