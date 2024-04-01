@@ -1,6 +1,6 @@
 import { Logo } from "../components/Logo";
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSignInWithEmailAndPassword  } from 'react-firebase-hooks/auth';
 import { auth } from "../services/firebaseConfig";
 
@@ -48,6 +48,7 @@ export function Login() {
             <a href="#">Esqueceu sua senha?</a>
           </span>
           <button onClick={handleSign} className="bg-black">Entrar</button>
+          <Link to="/registrar">Crie sua conta aqui</Link>
         </div>
       </div>
     </div>

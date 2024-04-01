@@ -5,7 +5,6 @@ export function Dashboard() {
     return (
         <div>
             <Layout />
-            <div className='dark:text-white'>Dashboard</div>
         </div>
     )
 }

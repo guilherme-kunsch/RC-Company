@@ -5,7 +5,6 @@ export function Alertas() {
     return (
         <div>
             <Layout />
-            <div className='dark:text-white'>Alertas</div>
         </div>
     )
 }
