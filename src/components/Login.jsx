@@ -1,53 +1,26 @@
 import { Logo } from "../components/Logo";
-import React, { useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useSignInWithEmailAndPassword  } from 'react-firebase-hooks/auth';
+import { auth } from "../services/firebaseConfig";
 
-
-const firebaseApp = initializeApp({
-  apiKey: "AIzaSyABYA7J7f6Veaat-HZ9hInYHxKdz_iwz6g",
-  authDomain: "fir-auth-97305.firebaseapp.com",
-  projectId: "fir-auth-97305",
-});
-
-const auth = getAuth();
 
 export function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
 
-  const db = getFirestore(firebaseApp);
-  const userCollectionRef = collection(db, "users");
-
-
-  async function handleUser() { 
-    const user = await addDoc(userCollectionRef, {
-      email,
-      password,
-    });
-    console.log(user)
+  function handleSign(e) {
+    e.preventDefault()
+    signInWithEmailAndPassword(email, password)
+    navigate('/home');
   }
-
-  // async function handleUser(event) { 
-  //   event.preventDefault()
-  //   try {
-  //     await signInWithEmailAndPassword(auth, email, password);
-  //     alert("Usuário autenticado com sucesso!");
-  //   } catch (error) {
-  //     alert("Erro ao autenticar o usuário:", error.message);
-  //   }
-  // }
-
-  //pegando o que ta salvo no banco
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(userCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getUsers();
-  }, []);
 
   return (
     <div className="w-[30rem]">
@@ -56,40 +29,26 @@ export function Login() {
           <Logo />
           <span>RC Company</span>
         </div>
-        <form className="flex text-white flex-col border-stone-100">
-          <label className="mb-2">E-mail</label>
+        <div className="flex text-white flex-col border-stone-100">
+          <label htmlFor="email" className="mb-2">E-mail</label>
           <input
             type="email"
             placeholder="Digite seu e-mail"
-            value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="text-black p-1"
-          ></input>
-          <label>Senha</label>
+          />
+          <label htmlFor="senha" className="mb-2">Senha</label>
           <input
             type="password"
             placeholder="Digite sua senha"
-            value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="text-black p-1"
-          ></input>
+          />
           <span>
             <a href="#">Esqueceu sua senha?</a>
           </span>
-          <button onClick={handleUser} className="bg-black">Entrar</button>
-          <div>
-            <ul>
-              {users.map((user) => {
-                return (
-                  <div key={user.id}>
-                    <li>{user.email}</li>
-                    <li>{user.senha}</li>
-                  </div>
-                )
-              })}
-            </ul>
-          </div>
-        </form>
+          <button onClick={handleSign} className="bg-black">Entrar</button>
+        </div>
       </div>
     </div>
   );
