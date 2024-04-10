@@ -5,9 +5,6 @@ export function Dashboard() {
     return (
         <div>
             <Layout />
-            <form>
-                <h1>OLa</h1>
-            </form>
         </div>
     )
 }
