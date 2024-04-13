@@ -9,12 +9,17 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth);
+  useSignInWithEmailAndPassword(auth);
 
-  function handleSign(e) {
+  const handleSign = async(e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(email, password);
-    navigate("/home");
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      navigate("/home");
+    } catch (error) {
+      console.error("Erro ao fazer login: ", error.message);
+      alert("Erro ao fazer login. Verifique seu email/senha.");
+    }
   }
 
   return (
