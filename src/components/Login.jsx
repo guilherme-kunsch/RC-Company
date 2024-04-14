@@ -31,7 +31,7 @@ export function Login() {
     <div className="w-[30rem]">
       <div className="bg-sky-900 p-6 rounded-md">
         <div className="flex justify-center text-white mb-4">
-          {/* <Logo /> */}
+          <Logo />
           <span>RC Company</span>
         </div>
         <div className="flex text-white flex-col border-stone-100">
