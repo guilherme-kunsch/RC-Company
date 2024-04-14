@@ -29,7 +29,7 @@ export function RegisterLogin() {
         .then((userCredential) => {
             const user = userCredential.user;
             alert("Usuário cadastrado com sucesso!");
-            navigate("/registrar")
+            navigate("/")
         })
         .catch((error) => {
             alert("Erro ao cadastrar usuário: " + error.message);
