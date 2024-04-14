@@ -9,7 +9,7 @@ import { Register } from "./pages/Register";
 
 export const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/login",
         element: <LoginInitial />
     },
     {
@@ -31,10 +31,6 @@ export const router = createBrowserRouter([
     {
         path: "/alertas",
         element: <LoginExit />
-    },
-    {
-        path: "/sair",
-        element: <Alertas />
-    },
+    }
 ])
 

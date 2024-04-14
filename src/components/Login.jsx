@@ -1,25 +1,30 @@
 import { Logo } from "../components/Logo";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "../services/firebaseConfig";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signInWithEmailAndPassword, user, loading, error] =
-  useSignInWithEmailAndPassword(auth);
-
-  const handleSign = async(e) => {
+  
+  
+  async function handleSign(e) {
     e.preventDefault();
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-      navigate("/home");
-    } catch (error) {
-      console.error("Erro ao fazer login: ", error.message);
-      alert("Erro ao fazer login. Verifique seu email/senha.");
-    }
+
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        navigate("/home");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert("Erro: " + errorMessage)
+        alert(errorCode + "E-mail e senha inválidos!")
+        
+      })
   }
 
   return (

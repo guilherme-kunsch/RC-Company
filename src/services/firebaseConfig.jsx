@@ -4,6 +4,7 @@ import { getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyABYA7J7f6Veaat-HZ9hInYHxKdz_iwz6g",
   authDomain: "fir-auth-97305.firebaseapp.com",
+  databaseURL: "https://fir-auth-97305-default-rtdb.firebaseio.com",
   projectId: "fir-auth-97305",
   storageBucket: "fir-auth-97305.appspot.com",
   messagingSenderId: "431374030043",

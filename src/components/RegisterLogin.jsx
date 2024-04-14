@@ -1,30 +1,40 @@
 import { Logo } from "./Logo";
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from "../services/firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
 
 export function RegisterLogin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [
-      createUserWithEmailAndPassword,
-      user,
-      loading,
-      error,
-    ] = useCreateUserWithEmailAndPassword(auth);
-  
-  
-    function handleSignRegister(e) {
-        e.preventDefault()
-        createUserWithEmailAndPassword(email, password);
-    }
+  const navigate = useNavigate();
 
-    if(loading) {
-      return (<p>Carregando....</p>);
-    }
+  function handleSignRegister(e) {
+      e.preventDefault();
+      
+      if (!email || !password) {
+          alert("Por favor, preencha todos os campos.");
+          return;
+      }
+
+      createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            alert("Usuário cadastrado com sucesso!");
+            navigate("/login")
+        })
+        .catch((error) => {
+            alert("Erro ao cadastrar usuário: " + error.message);
+        });
+  }
 
     return (
         <div className="w-[30rem]">
