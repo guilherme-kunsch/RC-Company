@@ -14,6 +14,7 @@ export function Navbar() {
           <Link to="/alertas">Alertas</Link>
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/historico">Histórico</Link>
+          <Link to="/">Sair</Link>
         </div>
       </div>
     </div>

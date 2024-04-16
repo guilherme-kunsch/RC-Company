@@ -1,7 +1,7 @@
 import { Logo } from "./Logo";
 import React, { useState } from "react";
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth } from "../services/firebaseConfig";
+import { getAuth } from "../services/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
 
@@ -13,7 +13,7 @@ export function RegisterLogin() {
     user,
     loading,
     error,
-  ] = useCreateUserWithEmailAndPassword(auth);
+  ] = useCreateUserWithEmailAndPassword(getAuth);
 
   const navigate = useNavigate();
 
