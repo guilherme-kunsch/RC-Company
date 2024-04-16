@@ -4,6 +4,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Historic } from "./pages/Historic";
 import { LoginInitial } from "./pages/LoginInitial";
 import { Register } from "./pages/Register";
+import { Alerts } from "./pages/Alerts";
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
     {
         path: "/historico",
         element: <Historic />
+    },
+    {
+        path: "/alertas",
+        element: <Alerts />
     }
 ])
 

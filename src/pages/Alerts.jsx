@@ -1,9 +1,10 @@
 import React from 'react'
+import { Navbar } from '../components/Navbar'
 
-export function Alertas() {
+export function Alerts() {
     return (
         <div>
-            <h1>a</h1>
+            <Navbar />
         </div>
     )
 }
