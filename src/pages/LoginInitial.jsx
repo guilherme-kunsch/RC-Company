@@ -1,4 +1,3 @@
-import { Background } from '../components/Background';
 import { Login } from '../components/Login'
 
 export function LoginInitial() {

@@ -1,9 +1,8 @@
-import { Layout } from "../components/Layout";
 
 export function LoginExit() {
     return (
         <div>
-            <Layout />
+           <h1>a</h1>
         </div>
     )
 }
