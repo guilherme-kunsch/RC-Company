@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.svg"
 
 export function Navbar() {
   return (
@@ -6,7 +7,7 @@ export function Navbar() {
       <div className="flex justify-between w-full">
         <Link to="/home">
           <div className="flex items-center gap-3 text-white ">
-            <img src="./src/assets/logo.svg" alt="logo da empresa" />
+            <img src={logo} alt="logo da empresa" />
             <h1>RC Company</h1>
           </div>
         </Link>

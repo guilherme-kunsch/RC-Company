@@ -20,8 +20,6 @@ export function Login() {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        alert("Erro: " + errorMessage)
         alert(errorCode + "E-mail e senha inválidos!")
         
       })
