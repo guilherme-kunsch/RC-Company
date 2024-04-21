@@ -13,7 +13,8 @@ const firebaseConfig = {
   measurementId: "G-84F8MS1MEX"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app)
-export { getAuth, database };
+const auth = getAuth(app); // Obtenha a instância de autenticação (auth)
+const database = getDatabase(app);
+
+export { auth, database };

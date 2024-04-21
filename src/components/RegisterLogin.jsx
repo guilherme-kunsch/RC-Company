@@ -1,14 +1,15 @@
 import { Logo } from "./Logo";
 import React, { useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { getAuth } from "../services/firebaseConfig";
+import { auth } from "../services/firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 
 export function RegisterLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(getAuth);
+    useCreateUserWithEmailAndPassword(auth);
 
   const navigate = useNavigate();
 
@@ -20,15 +21,22 @@ export function RegisterLogin() {
       return;
     }
 
-    createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        alert("Usuário cadastrado com sucesso!");
-        navigate("/");
-      })
-      .catch((error) => {
-        alert("Erro ao cadastrar usuário: " + error.message);
-      });
+    if (createUserWithEmailAndPassword) {
+      createUserWithEmailAndPassword(email, password)
+
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("user:", user);
+          alert("Usuário cadastrado com sucesso!", user);
+          navigate("/")
+        })
+        .catch((error) => {
+          alert("Erro ao cadastrar usuário: " + error.message);
+        });
+    } else {
+      console.error("createUserWithEmailAndPassword não está definido.");
+      alert("Erro interno ao tentar cadastrar usuário. Tente novamente mais tarde.");
+    }
   }
 
   return (
