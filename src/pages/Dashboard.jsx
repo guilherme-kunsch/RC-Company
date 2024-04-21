@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { getDatabase, ref, onValue, off } from "firebase/database";
+import { firestore } from "../services/firebaseConfig";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+
 
 export function Dashboard() {
   const [ledStatus, setLedStatus] = useState(null);
@@ -42,6 +45,18 @@ export function Dashboard() {
     };
   }, []);
 
+  async function enviarDadosParaFirebase(ledStatus, temperatura, umidade) {
+    try {
+      console.log('Dados a serem enviados:', { ledStatus, temperatura, umidade });
+      const dados = { ledStatus, temperatura, umidade };
+      await addDoc(collection(firestore, 'dadosPlantacao'), dados);
+  
+      console.log('Dados enviados com sucesso para o Firebase.');
+    } catch (error) {
+      console.error('Erro ao enviar dados para o Firebase:', error);
+    }
+  }
+
   return (
     <div>
       <Navbar />
@@ -61,9 +76,8 @@ export function Dashboard() {
             <p>{umidade} %</p>
           </div>
         </div>
-        <button className="text-white mt-6 p-2 bg-slate-700" onClick={() => {}}>
-          Atualizar Dados
-        </button>
+        
+        <button className="text-white mt-6 p-2 bg-slate-700" onClick={() => enviarDadosParaFirebase(ledStatus, temperatura, umidade)}>TESTE</button>
       </div>
     </div>
   );
