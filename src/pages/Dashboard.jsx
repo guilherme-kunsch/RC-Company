@@ -30,15 +30,16 @@ export function Dashboard() {
   const [temperaturaAr, setTemperaturaAr] = useState(null);
   const [hora, setHora] = useState(null);
   const [dataPoints, setDataPoints] = useState([]);
-  const [temperaturaArMax, setTemperaturaArMax] = useState(null);
-  const [temperaturaARMin, setTemperaturaArMin] = useState(null);
+  const [evapotranspiracao, setEvapotranspiracao] = useState(null);
+
 
   async function enviarDadosParaFirebase(
     ledStatus,
     temperatura,
     umidade,
     umidadeAr,
-    temperaturaAr
+    temperaturaAr,
+    hora
   ) {
     try {
       const dados = {
@@ -47,8 +48,10 @@ export function Dashboard() {
         temperaturaAr,
         umidade,
         umidadeAr,
+        hora
       };
       await addDoc(collection(firestore, "dadosPlantacao"), dados);
+      console.log(dados)
       console.log("Dados enviados com sucesso para o Firebase.");
     } catch (error) {
       console.error("Erro ao enviar dados para o Firebase:", error);
@@ -93,10 +96,19 @@ export function Dashboard() {
         console.log("Temperatura Média:", mediaTemp.toFixed(2));
         console.log("Max Temperature:", maxTemp);
         console.log("Min Temperature:", minTemp);
+
         setDataPoints(newDataPoints);
+
+        const duracaoDia = 24;
+        const evapoTranspiracao = calculaEvapotranspiracao(duracaoDia, mediaTemp);
+        setEvapotranspiracao(evapoTranspiracao);
       } catch (error) {
         console.error("Erro ao buscar dados do Firestore:", error);
       }
+    }
+
+    function calculaEvapotranspiracao(duracaoDia, mediaTemp){
+      return 0.013 * duracaoDia * (mediaTemp + 17);
     }
 
     fetchFirestoreData();
@@ -110,6 +122,7 @@ export function Dashboard() {
     const umidadeRef = ref(database, "Umidade");
     const umidadeArRef = ref(database, "Umidade_AR");
     const temperaturaArRef = ref(database, "Temperatura_AR");
+    const horaRef = ref(database, "Hora");
 
     const handleData = (snapshot) => {
       const value = snapshot.val();
@@ -126,6 +139,8 @@ export function Dashboard() {
         setUmidadeAr(value);
       } else if (refPath === temperaturaArRef.toString()) {
         setTemperaturaAr(value);
+      } else if (refPath === horaRef.toString()) {
+        setHora(value);
       }
     };
 
@@ -134,6 +149,8 @@ export function Dashboard() {
     onValue(umidadeRef, handleData);
     onValue(umidadeArRef, handleData);
     onValue(temperaturaArRef, handleData);
+    onValue(horaRef, handleData);
+
 
     return () => {
       off(ledStatusRef, handleData);
@@ -141,6 +158,7 @@ export function Dashboard() {
       off(umidadeRef, handleData);
       off(umidadeArRef, handleData);
       off(temperaturaArRef, handleData);
+      off(horaRef, handleData);
     };
   }, []);
 
@@ -150,17 +168,19 @@ export function Dashboard() {
       temperatura !== null &&
       umidade !== null &&
       temperaturaAr !== null &&
-      umidadeAr !== null
+      umidadeAr !== null &&
+      hora !== null
     ) {
       enviarDadosParaFirebase(
         ledStatus,
         temperatura,
         umidade,
         temperaturaAr,
-        umidadeAr
+        umidadeAr,
+        hora
       );
     }
-  }, [ledStatus, temperatura, umidade, umidadeAr, temperaturaAr]);
+  }, [ledStatus, temperatura, umidade, umidadeAr, temperaturaAr, hora]);
 
   return (
     <div>
@@ -169,15 +189,15 @@ export function Dashboard() {
         <h1>Dados da Plantação</h1>
         <div className="data-container flex gap-28 justify-center mt-8">
           <div className="data-item">
-            <h3>LED Status:</h3>
+            <h3>Bomba D'Água:</h3>
             <p>{ledStatus}</p>
           </div>
           <div className="data-item">
-            <h3>Temperatura:</h3>
+            <h3>Temperatura_Solo:</h3>
             <p>{temperatura} °C</p>
           </div>
           <div className="data-item">
-            <h3>Umidade:</h3>
+            <h3>Umidade_Solo:</h3>
             <p>{umidade} %</p>
           </div>
           <div className="data-item">
@@ -188,10 +208,14 @@ export function Dashboard() {
             <h3>Temperatura_AR:</h3>
             <p>{temperaturaAr} %</p>
           </div>
+          <div className="data-item">
+            <h3>Evapotranspiração:</h3>
+            <p>{evapotranspiracao.toFixed(2)}</p>
+          </div>
         </div>
       </div>
       <div className="flex justify-center">
-        <ResponsiveContainer width="80%" aspect={3}>
+        <ResponsiveContainer width="80%" aspect={2}>
           <LineChart
             data={dataPoints}
             width={730}
@@ -203,7 +227,7 @@ export function Dashboard() {
             }}
           >
             <CartesianGrid strokeDasharray="1" />
-            <XAxis dataKey="data" />
+            <XAxis dataKey="hora" />
             <YAxis dataKey="umidade" />
             <Tooltip />
             <Legend />

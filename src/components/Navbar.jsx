@@ -12,9 +12,9 @@ export function Navbar() {
           </div>
         </Link>
         <div className="flex gap-8 items-center text-white">
-          <Link to="/alertas">Alertas</Link>
+          <Link to="/alertas">Home</Link>
           <Link to="/dashboard">Dashboard</Link>
-          <Link to="/historico">Histórico</Link>
+          <Link to="/historico">Relatórios</Link>
           <Link to="/">Sair</Link>
         </div>
       </div>
