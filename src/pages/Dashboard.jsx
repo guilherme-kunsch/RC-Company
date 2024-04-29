@@ -51,8 +51,7 @@ export function Dashboard() {
         hora
       };
       await addDoc(collection(firestore, "dadosPlantacao"), dados);
-      console.log(dados)
-      console.log("Dados enviados com sucesso para o Firebase.");
+      console.log("Dados enviados com sucesso para o Firebase Firestore.");
     } catch (error) {
       console.error("Erro ao enviar dados para o Firebase:", error);
     }
@@ -74,10 +73,7 @@ export function Dashboard() {
           const data = doc.data();
           if (data.temperaturaAr) {
             const temperaturaDoAr = data.temperaturaAr;
-            newDataPoints.push({
-              umidade: data.umidade,
-              temperatura: data.temperatura,
-            });
+            newDataPoints.push(data);
 
             if (temperaturaDoAr > maxTemp) {
               maxTemp = temperaturaDoAr;
@@ -98,6 +94,7 @@ export function Dashboard() {
         console.log("Min Temperature:", minTemp);
 
         setDataPoints(newDataPoints);
+        console.log(newDataPoints)
 
         const duracaoDia = 24;
         const evapoTranspiracao = calculaEvapotranspiracao(duracaoDia, mediaTemp).toFixed(2);
@@ -206,7 +203,7 @@ export function Dashboard() {
           </div>
           <div className="data-item">
             <h3>Temperatura_AR:</h3>
-            <p>{temperaturaAr} %</p>
+            <p>{temperaturaAr} °C</p>
           </div>
           <div className="data-item">
             <h3>Evapotranspiração:</h3>
@@ -226,6 +223,8 @@ export function Dashboard() {
               bottom: 5,
             }}
           >
+            <XAxis dataKey="hora"/>
+            <YAxis />
             <Tooltip />
             <Legend />
             <Line
