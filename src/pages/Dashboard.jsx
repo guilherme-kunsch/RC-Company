@@ -100,7 +100,7 @@ export function Dashboard() {
         setDataPoints(newDataPoints);
 
         const duracaoDia = 24;
-        const evapoTranspiracao = calculaEvapotranspiracao(duracaoDia, mediaTemp);
+        const evapoTranspiracao = calculaEvapotranspiracao(duracaoDia, mediaTemp).toFixed(2);
         setEvapotranspiracao(evapoTranspiracao);
       } catch (error) {
         console.error("Erro ao buscar dados do Firestore:", error);
@@ -185,7 +185,7 @@ export function Dashboard() {
   return (
     <div>
       <Navbar />
-      <div className="mt-4 text-center text-white">
+      <div className="mt-4 mb-6 text-center text-white">
         <h1>Dados da Plantação</h1>
         <div className="data-container flex gap-28 justify-center mt-8">
           <div className="data-item">
@@ -210,12 +210,12 @@ export function Dashboard() {
           </div>
           <div className="data-item">
             <h3>Evapotranspiração:</h3>
-            <p>{evapotranspiracao.toFixed(2)}</p>
+            <p>{evapotranspiracao}</p>
           </div>
         </div>
       </div>
-      <div className="flex justify-center">
-        <ResponsiveContainer width="80%" aspect={2}>
+      <div className="flex justify-center mt-8">
+        <ResponsiveContainer width="80%" aspect={4}>
           <LineChart
             data={dataPoints}
             width={730}
@@ -226,18 +226,17 @@ export function Dashboard() {
               bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="1" />
-            <XAxis dataKey="hora" />
-            <YAxis dataKey="umidade" />
             <Tooltip />
             <Legend />
             <Line
               type="natural"
-              dataKey="umidade"
+              dataKey="temperaturaAr"
               stroke="#1ee3cf"
-              activeDot={{ r: 8 }}
             />
-            <Line type="natural" dataKey="temperatura" stroke="#6b48ff" />
+            <Line 
+              type="natural" 
+              dataKey="temperatura" 
+              stroke="#6b48ff" />
           </LineChart>
         </ResponsiveContainer>
       </div>
