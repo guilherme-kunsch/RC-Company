@@ -12,7 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { getDatabase, ref, onValue, off } from "firebase/database";
+import { getDatabase, ref, onValue, off, set } from "firebase/database";
 import { firestore } from "../services/firebaseConfig";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 
@@ -23,7 +23,7 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 //pegar a temperatura máxima e a minima e dividir por 2
 
 export function Dashboard() {
-  const [ledStatus, setLedStatus] = useState(null);
+  const [ledStatus, setLedStatus] = useState(0);
   const [temperatura, setTemperatura] = useState(null);
   const [umidade, setUmidade] = useState(null);
   const [umidadeAr, setUmidadeAr] = useState(null);
@@ -31,7 +31,6 @@ export function Dashboard() {
   const [hora, setHora] = useState(null);
   const [dataPoints, setDataPoints] = useState([]);
   const [evapotranspiracao, setEvapotranspiracao] = useState(null);
-
 
   async function enviarDadosParaFirebase(
     ledStatus,
@@ -48,7 +47,7 @@ export function Dashboard() {
         temperaturaAr,
         umidade,
         umidadeAr,
-        hora
+        hora,
       };
       await addDoc(collection(firestore, "dadosPlantacao"), dados);
       console.log("Dados enviados com sucesso para o Firebase Firestore.");
@@ -60,6 +59,8 @@ export function Dashboard() {
   useEffect(() => {
     async function fetchFirestoreData() {
       try {
+        console.log("Fetching data from Firestore...");
+
         const querySnapshot = await getDocs(
           collection(firestore, "dadosPlantacao")
         );
@@ -73,7 +74,7 @@ export function Dashboard() {
           const data = doc.data();
           if (data.temperaturaAr) {
             const temperaturaDoAr = data.temperaturaAr;
-            newDataPoints.push(data);
+            newDataPoints.push({ ...data, id: doc.id });
 
             if (temperaturaDoAr > maxTemp) {
               maxTemp = temperaturaDoAr;
@@ -87,28 +88,35 @@ export function Dashboard() {
           }
         });
 
-        const mediaTemp = count > 0 ? totalTemp / count : 0;
+        console.log("New data points fetched:", newDataPoints);
 
-        console.log("Temperatura Média:", mediaTemp.toFixed(2));
-        console.log("Max Temperature:", maxTemp);
-        console.log("Min Temperature:", minTemp);
+        const mediaTemp = count > 0 ? totalTemp / count : 0;
+        const duracaoDia = 24;
+        const evapoTranspiracao = calculaEvapotranspiracao(
+          duracaoDia,
+          mediaTemp
+        ).toFixed(2);
+
+        console.log("Calculated evapotranspiration:", evapoTranspiracao);
 
         setDataPoints(newDataPoints);
-        console.log(newDataPoints)
-
-        const duracaoDia = 24;
-        const evapoTranspiracao = calculaEvapotranspiracao(duracaoDia, mediaTemp).toFixed(2);
         setEvapotranspiracao(evapoTranspiracao);
       } catch (error) {
-        console.error("Erro ao buscar dados do Firestore:", error);
+        console.error("Error fetching data from Firestore:", error);
       }
     }
 
-    function calculaEvapotranspiracao(duracaoDia, mediaTemp){
+    function calculaEvapotranspiracao(duracaoDia, mediaTemp) {
       return 0.013 * duracaoDia * (mediaTemp + 17);
     }
 
     fetchFirestoreData();
+
+    const interval = setInterval(fetchFirestoreData, 300000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
@@ -148,7 +156,6 @@ export function Dashboard() {
     onValue(temperaturaArRef, handleData);
     onValue(horaRef, handleData);
 
-
     return () => {
       off(ledStatusRef, handleData);
       off(temperaturaRef, handleData);
@@ -158,6 +165,16 @@ export function Dashboard() {
       off(horaRef, handleData);
     };
   }, []);
+
+  const toggleLedStatus = () => {
+    const newLedStatus = ledStatus === 0 ? 1 : 0;
+    setLedStatus(newLedStatus); // Atualiza o estado local imediatamente
+
+    // Atualiza o valor no Firebase Realtime Database
+    const database = getDatabase();
+    const ledStatusRef = ref(database, "LED_STATUS");
+    set(ledStatusRef, newLedStatus); // Define o novo valor no Firebase
+  };
 
   useEffect(() => {
     if (
@@ -223,21 +240,17 @@ export function Dashboard() {
               bottom: 5,
             }}
           >
-            <XAxis dataKey="hora"/>
+            <XAxis dataKey="hora" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line
-              type="natural"
-              dataKey="temperaturaAr"
-              stroke="#1ee3cf"
-            />
-            <Line 
-              type="natural" 
-              dataKey="temperatura" 
-              stroke="#6b48ff" />
+            <Line type="natural" dataKey="temperaturaAr" stroke="#1ee3cf" />
+            <Line type="natural" dataKey="temperatura" stroke="#6b48ff" />
           </LineChart>
         </ResponsiveContainer>
+      </div>
+      <div>
+        <button onClick={toggleLedStatus}>Toggle LED Status</button>
       </div>
     </div>
   );
