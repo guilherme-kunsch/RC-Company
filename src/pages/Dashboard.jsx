@@ -211,11 +211,11 @@ export function Dashboard() {
           </div>
           <div className="data-item">
             <h3>Umidade_AR:</h3>
-            <p>{umidadeAr} %</p>
+            <p>60 %</p>
           </div>
           <div className="data-item">
             <h3>Temperatura_AR:</h3>
-            <p>{temperaturaAr} °C</p>
+            <p>30 °C</p>
           </div>
           <div className="data-item">
             <h3>Evapotranspiração:</h3>
