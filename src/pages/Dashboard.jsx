@@ -16,11 +16,6 @@ import { getDatabase, ref, onValue, off, set } from "firebase/database";
 import { firestore } from "../services/firebaseConfig";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 
-//calcular temperatura média **
-//duração do dia? 24h
-//calcular evapotranspiração e mostrar na tela
-//mandar 0 ou 1 para acender o led
-//pegar a temperatura máxima e a minima e dividir por 2
 
 export function Dashboard() {
   const [ledStatus, setLedStatus] = useState(0);
@@ -35,9 +30,9 @@ export function Dashboard() {
   async function enviarDadosParaFirebase(
     ledStatus,
     temperatura,
+    temperaturaAr,
     umidade,
     umidadeAr,
-    temperaturaAr,
     hora
   ) {
     try {
@@ -50,7 +45,7 @@ export function Dashboard() {
         hora,
       };
       await addDoc(collection(firestore, "dadosPlantacao"), dados);
-      console.log("Dados enviados com sucesso para o Firebase Firestore.");
+      console.log("Dados enviados com sucesso para o Firebase Firestore.", dados);
     } catch (error) {
       console.error("Erro ao enviar dados para o Firebase:", error);
     }
@@ -181,16 +176,16 @@ export function Dashboard() {
       ledStatus !== null &&
       temperatura !== null &&
       umidade !== null &&
-      temperaturaAr !== null &&
       umidadeAr !== null &&
+      temperaturaAr !== null &&
       hora !== null
     ) {
       enviarDadosParaFirebase(
         ledStatus,
         temperatura,
         umidade,
-        temperaturaAr,
         umidadeAr,
+        temperaturaAr,
         hora
       );
     }

@@ -7,9 +7,7 @@ export function Home() {
       <Navbar />
     </div>
 
-    
   );
-
   
 };
 
