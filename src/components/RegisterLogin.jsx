@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../services/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
 
 export function RegisterLogin() {
   const [email, setEmail] = useState("");
