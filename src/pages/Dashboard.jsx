@@ -23,7 +23,7 @@ export function Dashboard() {
   const [umidade, setUmidade] = useState(null);
   const [umidadeAr, setUmidadeAr] = useState(null);
   const [temperaturaAr, setTemperaturaAr] = useState(null);
-  const [hora, setHora] = useState(null);
+  const [data, setData] = useState(null);
   const [dataPoints, setDataPoints] = useState([]);
   const [evapotranspiracao, setEvapotranspiracao] = useState(null);
 
@@ -33,7 +33,7 @@ export function Dashboard() {
     temperaturaAr,
     umidade,
     umidadeAr,
-    hora
+    data
   ) {
     try {
       const dados = {
@@ -42,7 +42,7 @@ export function Dashboard() {
         temperaturaAr,
         umidade,
         umidadeAr,
-        hora,
+        data,
       };
       await addDoc(collection(firestore, "dadosPlantacao"), dados);
       console.log("Dados enviados com sucesso para o Firebase Firestore.", dados);
@@ -122,7 +122,7 @@ export function Dashboard() {
     const umidadeRef = ref(database, "Umidade");
     const umidadeArRef = ref(database, "Umidade_AR");
     const temperaturaArRef = ref(database, "Temperatura_AR");
-    const horaRef = ref(database, "Hora");
+    const dataRef = ref(database, "Data");
 
     const handleData = (snapshot) => {
       const value = snapshot.val();
@@ -139,8 +139,8 @@ export function Dashboard() {
         setUmidadeAr(value);
       } else if (refPath === temperaturaArRef.toString()) {
         setTemperaturaAr(value);
-      } else if (refPath === horaRef.toString()) {
-        setHora(value);
+      } else if (refPath === dataRef.toString()) {
+        setData(value);
       }
     };
 
@@ -149,7 +149,7 @@ export function Dashboard() {
     onValue(umidadeRef, handleData);
     onValue(umidadeArRef, handleData);
     onValue(temperaturaArRef, handleData);
-    onValue(horaRef, handleData);
+    onValue(dataRef, handleData);
 
     return () => {
       off(ledStatusRef, handleData);
@@ -157,7 +157,7 @@ export function Dashboard() {
       off(umidadeRef, handleData);
       off(umidadeArRef, handleData);
       off(temperaturaArRef, handleData);
-      off(horaRef, handleData);
+      off(dataRef, handleData);
     };
   }, []);
 
@@ -178,7 +178,7 @@ export function Dashboard() {
       umidade !== null &&
       umidadeAr !== null &&
       temperaturaAr !== null &&
-      hora !== null
+      data !== null
     ) {
       enviarDadosParaFirebase(
         ledStatus,
@@ -186,10 +186,10 @@ export function Dashboard() {
         umidade,
         umidadeAr,
         temperaturaAr,
-        hora
+        data
       );
     }
-  }, [ledStatus, temperatura, umidade, umidadeAr, temperaturaAr, hora]);
+  }, [ledStatus, temperatura, umidade, umidadeAr, temperaturaAr, data]);
 
   return (
     <div>
