@@ -7,6 +7,7 @@ import { FaArrowLeft, FaArrowRight, FaSearch, FaFileExcel } from "react-icons/fa
 
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../services/firebaseConfig";
+import * as XLSX from 'xlsx';
 
 //currentPage é o número atual da página
 //itemsPerPage quantos itens vamos exibir na página
@@ -72,6 +73,28 @@ function PaginationTable({ dataPoints, currentPage, setCurrentPage, itemsPerPage
 }
 
 
+function ExportToExcel({ data, fileName, sheetName }) {
+  const handleExportToExcel = () => {
+    if (data && data.length > 0) {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, sheetName || 'Sheet1');
+      XLSX.writeFile(workbook, fileName + '.xlsx');
+    } else {
+      console.error("Nenhum dado para exportar para o Excel.");
+    }
+  };
+
+  return (
+    <button
+      className="rounded-md text-white flex items-center justify-center bg-green-500 w-20 h-10 hover:bg-green-400"
+      onClick={handleExportToExcel}
+    >
+      <FaFileExcel />
+    </button>
+  );
+}
+
 export function Historic() {
   const [dateInitial, setDateInitial] = useState("");
   const [dateFinal, setDateFinal] = useState("");
@@ -119,24 +142,19 @@ export function Historic() {
             />
           </div>
           <div className="flex gap-20 justify-end w-[30%]">
-          <button
-            className="rounded-md text-white flex items-center justify-center bg-green-500 w-20 h-10 hover:bg-green-400"
-            onClick={handleSearch}
-          >
-            <FaSearch />
-          </button>
-          <button
-            className="rounded-md text-white flex items-center justify-center bg-green-500 w-20 h-10 hover:bg-green-400"
-            onClick={() => {
-              console.log("Exportar para Excel");
-            }}
-          >
-            <FaFileExcel />
-          </button>
+            <button
+              className="rounded-md text-white flex items-center justify-center bg-green-500 w-20 h-10 hover:bg-green-400"
+              onClick={handleSearch}
+            >
+              <FaSearch />
+            </button>
+            {searched && (
+              <ExportToExcel data={dataPoints} fileName="Dados" sheetName="Meus dados" />
+            )}
           </div>
         </div>
       </div>
-      {searched && ( // Mostrar a tabela somente se a pesquisa foi realizada
+      {searched && (
         <PaginationTable
           dataPoints={dataPoints}
           currentPage={currentPage}
@@ -147,4 +165,3 @@ export function Historic() {
     </div>
   );
 }
-
