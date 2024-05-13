@@ -99,6 +99,7 @@ export function Dashboard() {
       } catch (error) {
         console.error("Error fetching data from Firestore:", error);
       }
+
     }
 
     function calculaEvapotranspiracao(duracaoDia, mediaTemp) {
@@ -117,12 +118,12 @@ export function Dashboard() {
   useEffect(() => {
     const database = getDatabase();
 
+    const dataRef = ref(database, "Data");
     const ledStatusRef = ref(database, "LED_STATUS");
     const temperaturaRef = ref(database, "Temperatura");
     const umidadeRef = ref(database, "Umidade");
     const umidadeArRef = ref(database, "Umidade_AR");
     const temperaturaArRef = ref(database, "Temperatura_AR");
-    const dataRef = ref(database, "Data");
 
     const handleData = (snapshot) => {
       const value = snapshot.val();

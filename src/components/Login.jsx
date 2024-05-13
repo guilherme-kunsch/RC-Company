@@ -19,8 +19,7 @@ export function Login() {
         navigate("/home");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        alert(errorCode + "E-mail e senha inválidos!")
+        alert("E-mail e senha inválidos!")
         
       })
   }

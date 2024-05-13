@@ -4,18 +4,18 @@ import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyABYA7J7f6Veaat-HZ9hInYHxKdz_iwz6g",
-  authDomain: "fir-auth-97305.firebaseapp.com",
-  databaseURL: "https://fir-auth-97305-default-rtdb.firebaseio.com",
-  projectId: "fir-auth-97305",
-  storageBucket: "fir-auth-97305.appspot.com",
-  messagingSenderId: "431374030043",
-  appId: "1:431374030043:web:3f7eddeb1a4321066228fe",
-  measurementId: "G-84F8MS1MEX"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_DATABASE_URL,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app); // Obtenha a instância de autenticação (auth)
+const auth = getAuth(app);
 const database = getDatabase(app);
 const firestore = getFirestore(app);
 
