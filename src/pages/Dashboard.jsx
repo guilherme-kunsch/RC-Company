@@ -212,11 +212,11 @@ export function Dashboard() {
           </div>
           <div className="data-item">
             <h3>Umidade_AR:</h3>
-            <p>60 %</p>
+            <p>{umidadeAr}</p>
           </div>
           <div className="data-item">
             <h3>Temperatura_AR:</h3>
-            <p>30 °C</p>
+            <p>{temperaturaAr}</p>
           </div>
           <div className="data-item">
             <h3>Evapotranspiração:</h3>
@@ -245,8 +245,9 @@ export function Dashboard() {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div>
-        <button onClick={toggleLedStatus}>Toggle LED Status</button>
+      <p className="text-center mt-4 text-white">Bomba D'água</p>
+      <div className="bg-red-600 w-[9rem] p-2 mx-auto text-center mt-4 text-white rounded hover:bg-red-500">
+        <button onClick={toggleLedStatus}>Liga / Desliga</button>
       </div>
     </div>
   );

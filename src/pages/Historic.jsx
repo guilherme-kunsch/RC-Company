@@ -44,9 +44,9 @@ function PaginationTable({ dataPoints, currentPage, setCurrentPage, itemsPerPage
             <tr key={index}>
               <td className="text-center">{dados.ledStatus}</td>
               <td className="text-center">{dados.temperatura}</td>
-              <td className="text-center">{dados.umidade}</td>
               <td className="text-center">{dados.temperaturaAr}</td>
               <td className="text-center">{dados.umidadeAr}</td>
+              <td className="text-center">{dados.umidade}</td>
               <td className="text-center">5</td>
             </tr>
           ))}
