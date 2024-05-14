@@ -30,20 +30,21 @@ export function Dashboard() {
   async function enviarDadosParaFirebase(
     ledStatus,
     temperatura,
-    temperaturaAr,
     umidade,
     umidadeAr,
+    temperaturaAr,
     data
   ) {
     try {
       const dados = {
         ledStatus,
         temperatura,
-        temperaturaAr,
         umidade,
         umidadeAr,
-        data,
+        temperaturaAr,
+        data
       };
+      console.log("aqui", dados)
       await addDoc(collection(firestore, "dadosPlantacao"), dados);
       console.log("Dados enviados com sucesso para o Firebase Firestore.", dados);
     } catch (error) {
@@ -121,9 +122,10 @@ export function Dashboard() {
     const dataRef = ref(database, "Data");
     const ledStatusRef = ref(database, "LED_STATUS");
     const temperaturaRef = ref(database, "Temperatura");
+    const temperaturaArRef = ref(database, "Temperatura_AR");
     const umidadeRef = ref(database, "Umidade");
     const umidadeArRef = ref(database, "Umidade_AR");
-    const temperaturaArRef = ref(database, "Temperatura_AR");
+
 
     const handleData = (snapshot) => {
       const value = snapshot.val();
@@ -236,11 +238,11 @@ export function Dashboard() {
               bottom: 5,
             }}
           >
-            <XAxis dataKey="hora" />
+            <XAxis />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="natural" dataKey="temperaturaAr" stroke="#1ee3cf" />
+            <Line type="natural" dataKey="umidadeAr" stroke="#1ee3cf" />
             <Line type="natural" dataKey="temperatura" stroke="#6b48ff" />
           </LineChart>
         </ResponsiveContainer>
