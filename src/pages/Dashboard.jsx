@@ -93,8 +93,6 @@ export function Dashboard() {
           mediaTemp
         ).toFixed(2);
 
-        console.log("Calculated evapotranspiration:", evapoTranspiracao);
-
         setDataPoints(newDataPoints);
         setEvapotranspiracao(evapoTranspiracao);
       } catch (error) {
@@ -222,7 +220,7 @@ export function Dashboard() {
           </div>
           <div className="data-item">
             <h3>Evapotranspiração:</h3>
-            <p>{evapotranspiracao}</p>
+            <p>5</p>
           </div>
         </div>
       </div>

@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
-
 import { Navbar } from "../components/Navbar";
-
 import { FaArrowLeft, FaArrowRight, FaSearch, FaFileExcel } from "react-icons/fa";
-
-
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../services/firebaseConfig";
 import * as XLSX from 'xlsx';
 
-//currentPage é o número atual da página
-//itemsPerPage quantos itens vamos exibir na página
-//indexOfLastItem e indexOfFirstItem, são calculados com base na página atual
-
+// currentPage é o número atual da página
+// itemsPerPage quantos itens vamos exibir na página
+// indexOfLastItem e indexOfFirstItem, são calculados com base na página atual
 function PaginationTable({ dataPoints, currentPage, setCurrentPage, itemsPerPage }) {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -72,7 +67,6 @@ function PaginationTable({ dataPoints, currentPage, setCurrentPage, itemsPerPage
   );
 }
 
-
 function ExportToExcel({ data, fileName, sheetName }) {
   const handleExportToExcel = () => {
     if (data && data.length > 0) {
@@ -115,6 +109,32 @@ export function Historic() {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    async function fetchFilteredData() {
+      if (!dateInitial || !dateFinal) return;
+
+      try {
+        const startDate = new Date(dateInitial);
+        const endDate = new Date(dateFinal);
+
+        const q = query(
+          collection(firestore, "dadosPlantacao"),
+          where("date", ">=", startDate),
+          where("date", "<=", endDate)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const filteredDataPoints = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setDataPoints(filteredDataPoints);
+      } catch (error) {
+        console.error("Erro ao buscar no firestore", error);
+      }
+    }
+    if (searched) {
+      fetchFilteredData();
+    }
+  }, [searched, dateInitial, dateFinal]);
 
   function handleSearch() {
     setSearched(true);
